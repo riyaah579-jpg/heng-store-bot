@@ -1,5 +1,5 @@
 import os
-import requests
+import asyncio
 from dotenv import load_dotenv
 
 from telegram import (
@@ -14,29 +14,14 @@ from telegram.ext import (
     ContextTypes,
 )
 
-
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    await update.message.reply_text(
-        """
-🎮 Welcome to Heng Store
-
-💎 Game Top Up Bot
-
-Commands:
-
-/games - View games
-/price - View prices
-/order - Create order
-"""
-    )
-
-
+# =========================
+# START COMMAND
+# =========================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("🎮 Top Up", callback_data="topup")],
@@ -50,30 +35,65 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🎉 Welcome to Heng Store\n\nChoose a menu:",
         reply_markup=reply_markup,
-    )(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    )
 
+
+# =========================
+# GAMES COMMAND
+# =========================
+async def games(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         """
 🎮 Available Games
 
 🔥 Free Fire
-🔥 Mobile Legends
-🔥 PUBG Mobile
+⚔️ Mobile Legends
+🏆 PUBG Mobile
 """
     )
 
 
+# =========================
+# BUTTON HANDLER
+# =========================
+async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    if query.data == "topup":
+        await query.edit_message_text(
+            "🎮 Choose a game:\n\n🔥 Free Fire\n⚔️ Mobile Legends\n🏆 PUBG Mobile"
+        )
+
+    elif query.data == "prices":
+        await query.edit_message_text(
+            "💎 Price List\n\nComing soon..."
+        )
+
+    elif query.data == "check":
+        await query.edit_message_text(
+            "📦 Send your Order ID."
+        )
+
+    elif query.data == "contact":
+        await query.edit_message_text(
+            "📞 Contact Admin\n@YourUsername"
+        )
+
+
+# =========================
+# CREATE APP
+# =========================
 app = Application.builder().token(TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("games", games))
-
-# Add this line below the CommandHandlers
 app.add_handler(CallbackQueryHandler(button))
 
 
-import asyncio
-
+# =========================
+# MAIN
+# =========================
 async def main():
     print("Bot is running...")
     await app.initialize()
