@@ -33,7 +33,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text(
-        "🎉 Welcome to Heng Store\n\nChoose a menu:",
+        " Welcome to Heng Store.How can we halp you to top up ?\n\nChoose a menu:",
         reply_markup=reply_markup,
     )
 
@@ -46,9 +46,9 @@ async def games(update: Update, context: ContextTypes.DEFAULT_TYPE):
         """
 🎮 Available Games
 
-🔥 Free Fire
-⚔️ Mobile Legends
-🏆 PUBG Mobile
+ Free Fire /ff
+ Mobile Legends /ml 
+ PUBG Mobile /pubg
 """
     )
 
@@ -62,7 +62,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if query.data == "topup":
         await query.edit_message_text(
-            "🎮 Choose a game:\n\n🔥 Free Fire\n⚔️ Mobile Legends\n🏆 PUBG Mobile"
+            "🎮 Choose a game:\n\n Free Fire /ff\n Mobile Legends /mlbb \n PUBG Mobile /pubg "
         )
 
     elif query.data == "prices":
@@ -77,7 +77,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "contact":
         await query.edit_message_text(
-            "📞 Contact Admin\n@YourUsername"
+            "📞 Contact Admin\n@nuhuh108"
         )
 
 
